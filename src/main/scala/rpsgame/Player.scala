@@ -2,28 +2,21 @@ package rpsgame
 
 trait Player { player =>
 
-  class Move(val hand: Hand, opHand: =>Hand){
-    lazy val opponentHand = opHand
+  class Move(val opponent: Player) {
+    lazy val hand = nextHand
+    lazy val opHand = (opponent vs player).hand
 
     override def toString = {
-      (hand.win(opHand).map(v => s"$player won: $v") orElse
-        hand.loose(opHand).map(v => s"$player lost: $v") orElse
-        hand.draw(opHand).map(v => s"draw: $v")).get
+      (hand.win(opHand).map(v => s"$player defeats $opponent: $v") orElse
+        hand.loose(opHand).map(v => s"$player loses to $opponent: $v") orElse
+        hand.draw(opHand).map(v => s"$player drawn to $opponent: $v")).get
       //TODO: get is ugly - exhaustive matching would be nice
     }
   }
 
   def nextHand: Hand
 
-  def move(opponentHand: =>Hand) = {
-    new Move(nextHand,opponentHand)
-  }
-
-  def vs (opponent: Player) = {
-    lazy val myMove:Move = move(opMove.hand)
-    lazy val opMove:Player#Move = opponent.move(myMove.hand)
-    myMove
-  }
+  def vs(opponent: Player): Move = new Move(opponent)
 }
 
 case class Statue(hand: Hand) extends Player {
