@@ -6,15 +6,18 @@ Rock vs Rock
 Scissors vs Paper
 Paper vs Scissors
 
-val wheel = new Wheel(List(
+object Wheel8 extends Wheel(List(
   Rock, Rock, Paper, Rock, Scissors, Paper, Paper, Scissors
 ))
 
 val edward = Statue(Scissors)
 
-Noise vs wheel
-wheel vs Noise
-wheel vs edward
+Noise vs Wheel8
+Wheel8 vs Noise
+Wheel8 vs edward
 Noise vs edward
 edward vs Noise
 
+Hand.select("s")
+Hand.select("PA")
+Hand.select("RO")

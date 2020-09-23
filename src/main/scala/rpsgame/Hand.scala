@@ -17,6 +17,28 @@ sealed trait Hand {
 object Hand {
   val all: Seq[Hand] = List(Rock, Paper, Scissors)
   def random = all(Random.nextInt(all.size))
+  def select(mnemonic: String):Hand = mnemonic.toLowerCase match {
+    case Rock.pattern(_*) => Rock
+    case Paper.pattern(_*) => Paper
+    case Scissors.pattern(_*) =>Scissors
+    case s => throw new IllegalArgumentException(s"No such hand: $s")
+  }
+}
+
+case object Rock extends Hand {
+  val victory = new Victory(this,"crushes", Scissors)
+  val defeat = Paper.victory
+  val pattern = "(?i)(r|ro|roc|rock)".r
+}
+case object Paper extends Hand {
+  val victory = new Victory(this,"wraps", Rock)
+  val defeat = Scissors.victory
+  val pattern = "(?i)(p|pa|pap|pape|paper)".r
+}
+case object Scissors extends Hand {
+  val victory = new Victory(this,"cut", Paper)
+  val defeat = Rock.victory
+  val pattern = "(?i)(s|sc|sci|scissors|scisors)".r
 }
 
 trait Outcome {
@@ -37,16 +59,3 @@ case class Draw(left: Hand, right: Hand) extends Outcome {
     override def toString = s"$left is $right"
 }
 
-
-case object Rock extends Hand {
-  val victory = new Victory(this,"crushes", Scissors)
-  val defeat = Paper.victory
-}
-case object Paper extends Hand {
-  val victory = new Victory(this,"wraps", Rock)
-  val defeat = Scissors.victory
-}
-case object Scissors extends Hand {
-  val victory = new Victory(this,"cut", Paper)
-  val defeat = Rock.victory
-}
