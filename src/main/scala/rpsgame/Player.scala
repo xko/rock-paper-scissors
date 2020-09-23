@@ -1,15 +1,15 @@
 package rpsgame
 
-trait Player { player =>
+trait Player { me =>
 
-  class Move(val opponent: Player) {
+  class Move(val them: Player) {
     lazy val hand = nextHand
-    lazy val opHand = (opponent vs player).hand
+    lazy val theirHand = (them vs me).hand
 
     override def toString = {
-      (hand.win(opHand).map(v => s"$player defeats $opponent: $v") orElse
-        hand.loose(opHand).map(v => s"$player loses to $opponent: $v") orElse
-        hand.draw(opHand).map(v => s"$player drawn to $opponent: $v")).get
+      (hand.win(theirHand).map(v => s"$me defeats $them: $v") orElse
+        hand.loose(theirHand).map(v => s"$me loses to $them: $v") orElse
+        hand.draw(theirHand).map(v => s"$me drawn to $them: $v")).get
       //TODO: get is ugly - exhaustive matching would be nice
     }
   }
