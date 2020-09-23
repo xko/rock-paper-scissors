@@ -23,16 +23,20 @@ case class Statue(hand: Hand) extends Player {
   override def nextHand: Hand = hand
 }
 
-class Wheel(hands: Seq[Hand]) extends Player {
+case class Wheel(hands: Hand*) extends Player {
   private var i = hands.iterator
 
   override def nextHand: Hand = {
     if(!i.hasNext) i = hands.iterator
     i.next()
   }
+
+  override def toString: String = {
+    s"Wheel(${hands.head}+${hands.tail.size}..)"
+  }
 }
 
-object Noise extends Player {
+case object Noise extends Player {
   override def nextHand: Hand = Hand.random
 }
 
