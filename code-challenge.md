@@ -3,8 +3,6 @@
 
 Do you know the Rock Paper Scissors game? https://en.wikipedia.org/wiki/Rock_paper_scissors
 
-## Jira Issue
-
 ### Title
 Waste an hour having fun
 
@@ -32,14 +30,3 @@ I’d like to play rock, paper, scissors
 * Run / build instructions are seen in a positive light, as it indicates you know how to work in that environment.
 * We also consider the extensibility of the code produced. Well factored code should be relatively easily extended. Rock Paper Scissors Spock Lizard may be a natural extension, as in http://www.samkass.com/theories/RPSSL.html or more crazy extensions like http://www.umop.com/rps25.htm are also possible.
 
-## Deliverable
-
-Keep rough track of the time you dedicate to this coding exercise. We will talk about it during the code review.
-
-Please commit regularly changes in git. We won't penalize experimentation, quite the opposite actually. When you finish, send us a git bundle. To produce it, run, from inside the repository, the following:
-
-```
-$ git bundle create challenge-$yourName.git main
-```
-
-This will generate a git bundle file that you can send us.
