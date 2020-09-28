@@ -14,7 +14,7 @@ case class Config(players: Seq[Player] = Nil, games: Int = 1, console: Console =
 object Config {
   def parse(cmdline:String*): Option[Config] ={
     implicit val handRead: Read[Hand] = Read.reads(Hand.select)
-    new scopt.OptionParser[Config]("sbt run"){
+    new scopt.OptionParser[Config]("rps[.cmd]"){
       opt[Seq[Hand]]("wheel").abbr("w").action{
         case (hands, _) if hands.size < 2 =>  throw new IllegalArgumentException("Wheel needs at least 2 hands")
         case (hands, g) => g.withPlayer(Wheel(hands:_*))
