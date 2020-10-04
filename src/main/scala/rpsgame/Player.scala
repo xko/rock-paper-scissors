@@ -1,34 +1,21 @@
 package rpsgame
 
-trait Player { me =>
 
-  class Move(val them: Player) {
-    lazy val hand = nextHand
-    lazy val theirHand = (them vs me).hand
-
-    override def toString = {
-      (hand.win(theirHand).map(v => s"$me defeats $them: $v") orElse
-        hand.loose(theirHand).map(v => s"$me loses to $them: $v") orElse
-        hand.draw(theirHand).map(v => s"$me drawn to $them: $v")).get
-      //TODO: get is ugly - exhaustive matching would be nice
-    }
-  }
-
-  def nextHand: Hand
-
-  def vs(opponent: Player): Move = new Move(opponent)
+trait Player  {
+  val hand: Hand
+  def move(vs: Hand): Player
 }
 
 case class Statue(hand: Hand) extends Player {
-  override def nextHand: Hand = hand
+  override def move(vs: Hand): Statue = this
 }
 
 case class Wheel(hands: Hand*) extends Player {
-  private var i = hands.iterator
+  override val hand: Hand = hands.head
 
-  override def nextHand: Hand = {
-    if(!i.hasNext) i = hands.iterator
-    i.next()
+  override def move(vs: Hand): Wheel = {
+      val turned = hands.tail :+ hands.head
+      Wheel(turned:_*)
   }
 
   override def toString: String = {
@@ -36,7 +23,8 @@ case class Wheel(hands: Hand*) extends Player {
   }
 }
 
-case object Noise extends Player {
-  override def nextHand: Hand = Hand.random
+case class Noise() extends Player {
+  override val hand: Hand = Hand.random
+  override def move(vs: Hand): Noise = Noise()
 }
 

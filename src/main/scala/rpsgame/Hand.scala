@@ -2,16 +2,24 @@ package rpsgame
 
 import scala.util.Random
 
-sealed trait Hand {
-  def victory: Victory
-  def defeat: Victory
-  private val _draw = Draw(this, this)
+sealed abstract class Hand(val winVerb:String, lsr: =>Hand,  wnr: =>Hand){ me =>
+  lazy val loser = lsr
+  lazy val winner = wnr
 
-  def win(op: Hand) = Option.when(op == victory.looser)(victory)
-  def loose(op: Hand) = Option.when(op == defeat.winner)(defeat)
-  def draw(op: Hand) = (win(op) orElse loose(op)).fold(Option(_draw))(_ =>None)
+  sealed trait Outcome
 
-  def vs(op: Hand): Outcome = win(op) orElse loose(op) getOrElse _draw
+  case object Victory extends Outcome  {
+    override def toString: String = s"$me ${winVerb} $loser"
+  }
+  case object Defeat extends Outcome  {
+    override def toString: String = s"$winner ${winner.winVerb} $me"
+  }
+  case object Draw extends Outcome {
+    override def toString: String = s"$me is $me"
+  }
+
+  def vs(op: Hand): Outcome = if(op==winner) Defeat else if(op==loser) Victory else Draw
+
 }
 
 object Hand {
@@ -25,37 +33,16 @@ object Hand {
   }
 }
 
-case object Rock extends Hand {
-  val victory = new Victory(this,"crushes", Scissors)
-  val defeat = Paper.victory
+case object Rock extends Hand("crushes", Scissors, Paper) {
   val pattern = "(?i)(r|ro|roc|rock)".r
 }
-case object Paper extends Hand {
-  val victory = new Victory(this,"wraps", Rock)
-  val defeat = Scissors.victory
+
+case object Paper extends Hand("wraps", Rock, Scissors ) {
   val pattern = "(?i)(p|pa|pap|pape|paper)".r
 }
-case object Scissors extends Hand {
-  val victory = new Victory(this,"cut", Paper)
-  val defeat = Rock.victory
+
+case object Scissors extends Hand("cut", Paper, Rock) {
   val pattern = "(?i)(s|sc|sci|scissors|scisors)".r
 }
 
-trait Outcome {
-  def left: Hand
-  def right: Hand
-}
-
-class Victory (_winner: => Hand, val verb: String, _looser: =>Hand) extends Outcome {
-  lazy val left = _looser
-  lazy val right = _winner
-  def looser = left
-  def winner: Hand = right
-
-  override def toString = s"$winner $verb $looser"
-}
-
-case class Draw(left: Hand, right: Hand) extends Outcome {
-    override def toString = s"$left is $right"
-}
 
