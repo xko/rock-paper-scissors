@@ -14,5 +14,11 @@ var noise = Noise()
 
 var edward = Statue(Scissors)
 
-noise.hand vs edward.hand
-noise.move(wheel8.hand).hand vs wheel8.hand
+val disp = new Display {
+  override def before(game: Game): Unit = println(">>>")
+  override def afterEach(game: Game): Unit = println(game.outcome)
+  override def after(game: Game): Unit = println("<<<")
+}
+
+Game.play(wheel8, noise, disp, 5)
+Game.play(edward, wheel8, disp, 6)
