@@ -18,12 +18,26 @@ class ConsoleSpec extends AnyFunSpec with BeforeAndAfterEach with Matchers {
   describe("command line parser") {
     it("parses wheel player with different hand mnemonics") {
       stdErrOf {
-        Config.parse("-wh", "r,p,sc,ROCK,ro,s,scisors,pap","-st","s") should equal (
-          Some(Config(Seq(
-            Wheel(Rock, Paper, Scissors, Rock, Rock, Scissors, Scissors, Paper),
-            Statue(Scissors)
-          ), 1)) )
+        val cfg = Config.parse("-wh", "r,p,sc,ROCK,ro,s,scisors,pap", "-st", "s").get
+        cfg.host should equal(Wheel(Rock, Paper, Scissors, Rock, Rock, Scissors, Scissors, Paper))
+        cfg.guest should equal(Statue(Scissors))
       } shouldBe empty
+    }
+
+    it("parses # of rounds") {
+        Config.parse("-wh", "r,p,sc","-st","s","42").get.games should equal (42)
+    }
+
+    it("fails on <2 players") {
+      stdErrOf{
+        Config.parse("-st","pa") should equal (None)
+      } should include ("List(Statue(Paper)) is not enough, we need exactly 2 players")
+    }
+
+    it("fails on >2 players") {
+      stdErrOf{
+        Config.parse("-st","pa", "-n", "-n") should equal (None)
+      } should include ("List(Statue(Paper), Noise(), Noise()) is too much, we need exactly 2 players")
     }
 
     it("fails on unknown mnemonic") {
