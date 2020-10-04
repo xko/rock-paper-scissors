@@ -2,14 +2,18 @@ package rpsgame
 
 import scala.Console.{out, RED, BLUE, RESET, print, println}
 
-object Console extends Display {
+class Console extends Display {
 
   override def afterEach(g: Game): Unit = {
     println()
+    round(g)
+  }
+
+  protected def round(g: Game) = {
     g.onRound(
-      printnn( columns("",g.host.hand," ",g.guest.hand,s"-> ${g.outcome}",RED) ),
-      printnn( columns("",g.host.hand," ",g.guest.hand,s"-> ${g.outcome}",BLUE) ),
-      printnn( columns("",g.host.hand," ",g.guest.hand,s"-> ${g.outcome}") ),
+      printnn(columns("", g.host.hand, " ", g.guest.hand, s"-> ${g.outcome}", RED)),
+      printnn(columns("", g.host.hand, " ", g.guest.hand, s"-> ${g.outcome}", BLUE)),
+      printnn(columns("", g.host.hand, " ", g.guest.hand, s"-> ${g.outcome}")),
     )
   }
 

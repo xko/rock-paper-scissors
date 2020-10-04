@@ -3,7 +3,9 @@ package rpsgame
 
 import scopt._
 
-case class Config(players: Seq[Player] = Nil, games: Int = 1){
+import scala.Console.{BLUE, RED}
+
+case class Config(players: Seq[Player] = Nil, games: Int = 1, console: Console = new Console){
   def withPlayer(p: Player) = copy(players = players :+ p)
   def host: Player = players.head
   def guest: Player = players.last
@@ -25,6 +27,12 @@ object Config {
       opt[Unit]("noise").abbr("n").action{  (_,g) =>
         g.withPlayer(Noise())
       }.unbounded()
+
+      opt[String]("human").abbr("h").action { (name,c) =>
+        val p = new HumanPlayer(name, if(c.players.isEmpty) RED else BLUE)
+        c.withPlayer(p).copy(console = p)
+      }.maxOccurs(1).valueName("<your nmae>")
+        .text("a human player, specify to play against computer")
 
       arg[Int]("#games").action { (no,g) => g.copy(games = no) }
         .optional().withFallback(() =>1)
