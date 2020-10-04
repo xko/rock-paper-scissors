@@ -29,20 +29,21 @@ object Hand {
     case Rock.pattern(_*) => Rock
     case Paper.pattern(_*) => Paper
     case Scissors.pattern(_*) =>Scissors
-    case s => throw new IllegalArgumentException(s"No such hand: $s")
+    case s if s.isBlank => throw new IllegalArgumentException(s"No hand specified")
+    case s => throw new IllegalArgumentException(s"No such hand '$s'")
   }
 }
 
 case object Rock extends Hand("crushes", Scissors, Paper) {
-  val pattern = "(?i)(r|ro|roc|rock)".r
+  val pattern = "(?i)(r|ro|roc|rock|1)".r
 }
 
 case object Paper extends Hand("wraps", Rock, Scissors ) {
-  val pattern = "(?i)(p|pa|pap|pape|paper)".r
+  val pattern = "(?i)(p|pa|pap|pape|paper|2)".r
 }
 
 case object Scissors extends Hand("cut", Paper, Rock) {
-  val pattern = "(?i)(s|sc|sci|scissors|scisors)".r
+  val pattern = "(?i)(s|sc|sci|scissors|scisors|3)".r
 }
 
 

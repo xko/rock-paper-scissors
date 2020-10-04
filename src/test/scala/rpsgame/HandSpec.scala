@@ -34,13 +34,13 @@ class HandSpec extends AnyFunSpec with Matchers {
     it("throw at unknown mnemonic") {
       the [Exception] thrownBy {
         Hand.select("lizard")
-      } should have message "No such hand: lizard"
+      } should have message "No such hand 'lizard'"
     }
 
     it ("throw at empty mnemonic") {
       the [Exception] thrownBy {
         Hand.select("")
-      } should have message "No such hand: "
+      } should have message "No hand specified"
     }
   }
 

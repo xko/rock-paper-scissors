@@ -23,7 +23,7 @@ class HumanPlayer(val name: String, val color: String) extends Console with Play
     (Try {
       Hand.select(io.StdIn.readLine(s" -> Your hand, $color$name$RESET:"))
     } recover { case ex: Exception =>
-      printnn(columns("","","","",s"FAILED:${ex.getMessage}"))
+      printnn("%69s".format(s"${ex.getMessage}!"))
       readNextHand
     }).get
   }
