@@ -9,6 +9,18 @@ case class Game(host:Player, guest:Player, hostScore: Int = 0, guestScore: Int =
 
   def outcome: host.hand.Outcome = host.hand vs guest.hand
 
+  def onRound(hostWins: =>Unit, guestWins: =>Unit, draw: =>Unit): Unit = outcome match {
+    case host.hand.Victory => hostWins
+    case host.hand.Defeat  => guestWins
+    case _                 => draw
+  }
+
+  def onGame(hostWins: =>Unit, guestWins: =>Unit, draw: =>Unit): Unit ={
+    if     (hostScore  > guestScore) hostWins
+    else if(guestScore > hostScore) guestWins
+    else                       draw
+  }
+
 }
 
 object Game {
