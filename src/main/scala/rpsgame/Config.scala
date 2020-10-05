@@ -17,7 +17,7 @@ object Config {
     new scopt.OptionParser[Config]("rps[.cmd]"){
       opt[Seq[Hand]]("wheel").abbr("w").action{
         case (hands, _) if hands.size < 2 =>  throw new IllegalArgumentException("Wheel needs at least 2 hands")
-        case (hands, g) => g.withPlayer(Wheel(hands:_*))
+        case (hands, g) => g.withPlayer(Wheel(hands.head, hands.tail:_*))
       }.valueName("<hand>,<hand>,..").unbounded()
         .text("adds a wheel player to the game. It throws specified hands in loop")
 

@@ -10,17 +10,14 @@ case class Statue(hand: Hand) extends Player {
   override def move(vs: Hand): Statue = this
 }
 
-case class Wheel(hands: Hand*) extends Player {
-  override val hand: Hand = hands.head
+case class Wheel(hand:Hand, more: Hand*) extends Player {
 
   override def move(vs: Hand): Wheel = {
-      val turned = hands.tail :+ hands.head
-      Wheel(turned:_*)
+      val turned = more :+ hand
+      Wheel(turned.head, turned.tail:_*)
   }
 
-  override def toString: String = {
-    s"Wheel(${hands.head}+${hands.tail.size}..)"
-  }
+  override def toString: String = s"Wheel($hand+$more..)"
 }
 
 case class Noise() extends Player {
