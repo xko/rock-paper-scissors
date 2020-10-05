@@ -37,6 +37,11 @@ object Config {
       }.maxOccurs(1).valueName("<your name>")
         .text("a human player, specify to play against computer")
 
+      opt[Unit]("markov").abbr("m").action { (name,c) =>
+        c.withPlayer(new MarkovPredictor)
+      }.unbounded()
+        .text("smarter player, trying to predict your moves using Markov chains")
+
       arg[Int]("#games").action { (no,g) => g.copy(games = no) }
         .optional().withFallback(() =>1)
 
