@@ -15,6 +15,7 @@ object Config {
   def parse(cmdline:String*): Option[Config] ={
     implicit val handRead: Read[Hand] = Read.reads(Hand.select)
     new scopt.OptionParser[Config]("rps[.cmd]"){
+      head("\nRock-Paper-Scissors game\n")
       opt[Seq[Hand]]("wheel").abbr("w").action{
         case (hands, _) if hands.size < 2 =>  throw new IllegalArgumentException("Wheel needs at least 2 hands")
         case (hands, g) => g.withPlayer(Wheel(hands.head, hands.tail:_*))
@@ -44,6 +45,19 @@ object Config {
 
       arg[Int]("#games").action { (no,g) => g.copy(games = no) }
         .optional().withFallback(() =>1)
+        .text("number of games to play")
+
+      note("\nExample: ./rps -w s,r,p,r,r -s s 10\n" +
+        "  will play 10 games between player circling Scissors,Rock,Paper,Rock,Rock and " +
+        "  player always throwing Scissors\n")
+      note("\nExample: ./rps -m -h Bob 10\n" +
+        "  will play 10 games between predictor and human named Bob" +
+        "  (Try this! Predictor wins about 70%!)\n")
+      note("<hand>s can be specified as (case insensitive):\n" +
+        "  Rock:     r,ro,rock,1\n" +
+        "  Paper:    p,pa,paper,2\n" +
+        "  Scissors: s,sc,scissors,3\n" +
+        "  .. also when playing interactively as human player")
 
       checkConfig{
         case Config(Nil,_,_) => Left("No players specified")
