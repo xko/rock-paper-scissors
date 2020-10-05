@@ -1,15 +1,14 @@
 package rpsgame
 
-import java.io.{ByteArrayOutputStream, PrintStream}
+import java.io.ByteArrayOutputStream
 
-import org.scalatest.{BeforeAndAfter, BeforeAndAfterEach}
-import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.BeforeAndAfterEach
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
 
 class ConsoleSpec extends AnyFunSpec with BeforeAndAfterEach with Matchers {
-  def stdErrOf[T](trunk: => T) = {
+  def stdErrOf[T](trunk: => T): String = {
     val buf = new ByteArrayOutputStream()
     scala.Console.withErr(buf)(trunk)
     buf.toString

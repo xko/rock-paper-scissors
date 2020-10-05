@@ -4,8 +4,8 @@ package rpsgame
 case class Game(host:Player, guest:Player, hostScore: Int = 0, guestScore: Int = 0) {
 
   def next:Game = Game( host.move(guest.hand), guest.move(host.hand),
-    if(outcome == host.hand.Victory) hostScore + 1  else hostScore,
-    if(outcome == host.hand.Defeat)  guestScore + 1 else guestScore )
+                        if(outcome == host.hand.Victory) hostScore + 1  else hostScore,
+                        if(outcome == host.hand.Defeat)  guestScore + 1 else guestScore )
 
   def outcome: host.hand.Outcome = host.hand vs guest.hand
 
@@ -17,8 +17,8 @@ case class Game(host:Player, guest:Player, hostScore: Int = 0, guestScore: Int =
 
   def onGame(hostWins: =>Unit, guestWins: =>Unit, draw: =>Unit): Unit ={
     if     (hostScore  > guestScore) hostWins
-    else if(guestScore > hostScore) guestWins
-    else                       draw
+    else if(guestScore > hostScore)  guestWins
+    else                             draw
   }
 
 }

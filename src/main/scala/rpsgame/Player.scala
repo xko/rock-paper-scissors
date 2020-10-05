@@ -24,4 +24,3 @@ case class Noise() extends Player {
   override val hand: Hand = Hand.random
   override def move(vs: Hand): Noise = Noise()
 }
-

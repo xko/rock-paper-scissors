@@ -9,7 +9,7 @@ class Console extends Display {
     round(g)
   }
 
-  protected def round(g: Game) = {
+  protected def round(g: Game): Unit = {
     g.onRound(
       printnn(columns("", g.host.hand, " ", g.guest.hand, s"-> ${g.outcome}", RED)),
       printnn(columns("", g.host.hand, " ", g.guest.hand, s"-> ${g.outcome}", BLUE)),

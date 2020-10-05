@@ -1,12 +1,11 @@
 package rpsgame
 
-
 import scopt._
 
 import scala.Console.{BLUE, RED}
 
 case class Config(players: Seq[Player] = Nil, games: Int = 1, console: Console = new Console){
-  def withPlayer(p: Player) = copy(players = players :+ p)
+  def withPlayer(p: Player): Config = copy(players = players :+ p)
   def host: Player = players.head
   def guest: Player = players.last
 }
@@ -38,7 +37,7 @@ object Config {
       }.maxOccurs(1).valueName("<your name>")
         .text("a human player, specify to play against computer")
 
-      opt[Unit]("markov").abbr("m").action { (name,c) =>
+      opt[Unit]("markov").abbr("m").action { (_,c) =>
         c.withPlayer(new MarkovPredictor)
       }.unbounded()
         .text("smarter player, trying to predict your moves using Markov chains")
@@ -68,6 +67,3 @@ object Config {
     }.parse(cmdline, Config())
   }
 }
-
-
-

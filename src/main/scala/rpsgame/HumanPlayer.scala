@@ -1,6 +1,6 @@
 package rpsgame
 
-import scala.Console.{BLUE, RED, RESET, println}
+import scala.Console.{RESET, println}
 import scala.util.Try
 
 class HumanPlayer(val name: String, val color: String) extends Console with Player {

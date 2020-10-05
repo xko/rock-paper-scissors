@@ -14,5 +14,4 @@ class MarkovPredictorSpec extends AnyFlatSpec with Matchers{
     m.stats.get(Rock,Scissors).chances(Paper) shouldBe 1
     m.stats.get(Scissors,Paper).chances(Scissors) shouldBe 1
   }
-
 }
